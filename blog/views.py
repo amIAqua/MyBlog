@@ -1,19 +1,55 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import *
-from .forms import LeaveCommentForm
+from .forms import LeaveCommentForm, CityForm
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.views.generic import ListView
 from django.contrib import messages
+import requests
 
 
 
 def MainPageView(request):
 
-	template_name = 'blog/mainpage.html'
+    template_name = 'blog/mainpage.html'
 
-	return render(request, template_name)
+    app_id = '8f991c13f0503fce38aea9d673eb0f50' 
+    url = 'https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=' + app_id
+
+    if request.method == 'POST':
+        form = CityForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('blog:MainPageView')) 
+
+    form = CityForm()
+   
+    cities = City.objects.all()
+    all_cities = []
+
+    for city in cities:
+
+        res = requests.get(url.format(city)).json()
+    
+        city_info = {
+
+            'city': city,
+            'temp': res['main']['temp'],
+            'humidity': res['main']['humidity'],
+            'icon': res['weather'][0]['icon']
+        }
+
+        all_cities.append(city_info)
+
+    context = {
+        'all_info': all_cities,
+        'form': form,
+        #'clear': d1
+        }
+
+    return render(request, template_name, context )
 
 
 class PostsPageList(ListView):
