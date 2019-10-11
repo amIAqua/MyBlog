@@ -40,8 +40,14 @@
 		</form>		
 	</div>
 
-	{% for message in messages %}
-		    {{message}}
+	{% if messages %}
+	    {% for message in messages %}
+	        <div class="container">
+		        <div class="alert alert-danger col-md-3" role="alert" >	    	    
+		    	    <b>{{message}}</b>	    	
+		        </div>
+		    </div>
 		{% endfor %}
+	{% endif %}
 
 {% endblock %}
