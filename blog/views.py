@@ -31,8 +31,7 @@ def MainPageView(request):
 
     for city in cities:
 
-        res = requests.get(url.format(city)).json()
-    
+        res = requests.get(url.format(city)).json()  
         city_info = {
 
             'city': city,
@@ -51,7 +50,6 @@ def MainPageView(request):
 
     return render(request, template_name, context )
 
-
 class PostsPageList(ListView):
 
     model = Post
@@ -59,11 +57,7 @@ class PostsPageList(ListView):
     context_object_name = 'postslist'
 
     queryset = Post.objects.filter(post_status=1).order_by('-pub_date')[:10]
-	#content = {'posts': posts}
-
-	#return render(request, template_name, content)
-
-
+	
 def PostPageView(request, slug):
 
     template_name = 'blog/postview.html'
@@ -73,18 +67,12 @@ def PostPageView(request, slug):
     if request.method == 'POST':
 
         form = LeaveCommentForm(request.POST)
-
-        #if user.is_authenticated():
-    
+  
         current_user = request.user.get_username()
         add_comment_content = request.POST['comment_content']                    
         post.comment_set.create(user = current_user, comment_content = add_comment_content)                
         return HttpResponseRedirect(reverse('blog:PostPageView', args = (post.slug,)))
         
-        
-        #messages.info(request, 'Войдите или зарегистрируйтесь, чтобы оставить комментарий')
-
-
     form = LeaveCommentForm()
                                
     content = {
@@ -106,14 +94,6 @@ def Postliked(request, slug):
         post_liked = ''
         return HttpResponseRedirect(reverse('PostPageView', args = (post.slug,)))
     
-    post_liked = ''
-        
-        
-        
-
-   
-
-
     content = {
 	    'post': post,
 	    'post_liked': post_liked,
