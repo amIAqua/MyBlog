@@ -1,0 +1,65 @@
+{% extends 'blog/mainpage.html' %}
+
+{% block title %}
+	<title>Actual Posts</title>
+	{% endblock %}
+
+{% block active_link %}
+     <ul class="nav navbar-nav">       
+            <li class="dropdown active">           
+              <a class="dropdown-toggle" style="font-size: 22px" data-toggle="dropdown" href="#">POSTS</a>           
+                <ul class="dropdown-menu">                            
+                  <li><a href="{% url 'blog:PostsPageList' %}">All Posts</a></li>            
+                    <li class="divider"></li>
+                  <li class="active"><a href="{% url 'blog:Posts24PageView' %}">For the last 24 hours</a></li>                        
+                </ul>
+            </li>
+            <li> <a href="{% url 'blog:ContactMe' %}" style="font-size: 22px">CONTACT ME</a></li>          
+          </ul>
+          <form class="navbar-form navbar-right">
+          <div class="form-group">
+            <input class="form-control" type="text" placeholder="Tap to search for">
+           </div>
+            <button type="submit" data-toggle="dropdown" class="dropdown-toggle btn btn-primary">Search</button>             
+                <ul class="dropdown-menu">
+                  <li><a href="#">Searh through the website</a></li>
+                  <li><a href="#">Searh on the internet</a></li> 
+                </ul>
+                {% if user.is_authenticated %}
+                    <a class="btn btn-info" href="{% url 'accounts:SignoutView' %}">Sign out</a>
+                    <div class="btn btn-info" >Welcome, <b>{{user}}</b></div>
+                {% else %}
+                    <a class="btn btn-info" href="{% url 'accounts:SignupView' %}">Sign in</a>
+                {% endif%}                      
+        </form>
+{% endblock %}
+
+
+{% block content%}
+
+    <div class="container" style="width: 1600px">
+    <br>
+        {% if posts %}
+            {% for post in posts%}
+
+                {% if post.was_published_before24 %}
+               
+                
+                    <div class="jumbotron"> 
+                                            
+                        <h2 class="display-4">{{ post.title }}</h2>                 
+                        <hr class="my-4">
+                            <p>{{ post.pub_date }}</p>
+                        <p class="lead">
+                            <a class="btn btn-primary btn-lg" href="{% url 'blog:PostPageView' post.slug %}" role="button">Read</a>
+                        </p>
+                {% endif %}                   
+                    
+               </div>
+            {% endfor %}
+
+        {% else%}
+            <p>Посты не найдены:(</p>
+        {% endif %}
+    </div>
+{% endblock %}

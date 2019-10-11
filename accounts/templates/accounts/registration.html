@@ -1,0 +1,47 @@
+{% extends  'accounts/sign_up.html' %}
+
+{% block content %}
+    <div class="container">
+		
+		<form method="POST" action="">
+			{% csrf_token %}
+			<div class="col-md-3">
+			    <div class="form-group">
+				    <h3>
+			            Регистрация					
+		            </h3>
+		        </div>
+
+		        <div class="form-group">
+		            <input class="form-control" type="text" name="first_name" placeholder="Ваше имя">		        	
+		        </div>
+		        <div class="form-group">
+		            <input class="form-control" type="text" name="last_name" placeholder="Фамилия">		        	
+		        </div>
+		        <div class="form-group">
+		            <input class="form-control" type="text" name="username" placeholder="Никнейм">		        	
+		        </div>
+		        <div class="form-group">
+		            <input class="form-control" type="email" name="email" placeholder="E-mail">		        	
+		        </div>
+		        <div class="form-group">
+		            <input class="form-control" type="password" name="password" placeholder="Пароль">
+		        </div>
+		        <div class="form-group">
+		            <input class="form-control" type="password" name="password_confirm" placeholder="Повторение пароля">
+		        </div>
+		        <div class="form-group">
+
+		        <button class="btn btn-primary" type="submit">Зарегистрироваться</button>				   
+		        <a class="btn btn-primary" href="{% url 'accounts:SignupView' %}">Назад</a>
+		        </div>
+		  			
+			</div>			
+		</form>		
+	</div>
+
+	{% for message in messages %}
+		    {{message}}
+		{% endfor %}
+
+{% endblock %}

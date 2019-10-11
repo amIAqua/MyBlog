@@ -1,0 +1,93 @@
+{% extends 'blog/mainpage.html' %}
+
+{% block title %}
+  <title>{{ post.title }}</title>
+  {% endblock %}
+
+{% block active_link %}
+     <ul class="nav navbar-nav">       
+            <li class="dropdown active">           
+              <a class="dropdown-toggle" style="font-size: 22px" data-toggle="dropdown" href="#">POSTS</a>           
+                <ul class="dropdown-menu">                            
+                  <li class="active"><a href="{% url 'blog:PostsPageList' %}">All Posts</a></li>            
+                    <li class="divider"></li>
+                  <li><a href="{% url 'blog:Posts24PageView' %}">For the last 24 hours</a></li>                        
+                </ul>
+            </li>
+            <li> <a href="{% url 'blog:ContactMe' %}" style="font-size: 22px">CONTACT ME</a></li>          
+          </ul>
+          <form class="navbar-form navbar-right">
+          <div class="form-group">
+            <input class="form-control" type="text" placeholder="Tap to search for">
+           </div>
+            <button type="submit" data-toggle="dropdown" class="dropdown-toggle btn btn-primary">Search</button>             
+                <ul class="dropdown-menu">
+                  <li><a href="#">Searh through the website</a></li>
+                  <li><a href="#">Searh on the internet</a></li> 
+                </ul>
+                {% if user.is_authenticated %}
+                    <a class="btn btn-info" href="{% url 'accounts:SignoutView' %}">Sign out</a>
+                    <div class="btn btn-info" >Welcome, <b>{{user}}</b></div>
+                {% else %}
+                    <a class="btn btn-info" href="{% url 'accounts:SignupView' %}">Sign in</a>
+                {% endif%}                     
+        </form>
+{% endblock %}
+     
+{% block content%}
+    <br>
+    <div class="container" style="width: 1600px">
+      <div class="jumbotron">
+        <h2>{{ post.title }}</h2>
+        <hr class="my-4">
+        <h4>{{ post.pub_date }}</h4>
+        <hr class="my-4">
+        <p>{{ post.post_content }}</p>
+        <br>
+      </div>    
+    </div>
+
+    <div class="container" style="width: 1600px">
+      <h2>Комментарии</h2>
+      <hr class="my-4">     
+    </div>
+
+    <div class="container" style="width: 1600px">
+      <div class="jumbotron">
+        <h3>Добавить комментарий</h3>
+        <hr class="my-4">
+
+      {% if user.is_authenticated %}
+          <form action="{% url 'blog:PostPageView' post.slug %}" method="POST">
+          {% csrf_token %}
+             <div class="form-group">
+                {{ form.comment_content }}                 
+              </div>                    
+                <button href="" class="btn btn-primary" type="submit">Добавить</button>
+           </form>
+      {% else %}
+          <h3>Войдите или зарегистрируйтесь, чтобы оставить комментарий</h3>
+          <a class="btn btn-primary" href="{% url 'accounts:SignupView' %}">Войти</a>
+      {% endif %}       
+          
+      </div>      
+    </div>
+
+
+
+    {% if comments_list %}
+        {% for comment in comments_list %}
+            <div class="container" style="width: 1600px">
+                <div class="jumbotron">
+                    <h3><a style="text-decoration: none" href="#">{{ comment.user }}</a></h3>
+                    <hr class="my-4">
+                    <h5>{{ comment.comment_content }}</h5>
+                    <hr class="my-4">
+                    <h5>{{ comment.pub_date }}</h5>
+                    
+
+                </div>    
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
