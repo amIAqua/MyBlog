@@ -27,10 +27,6 @@ class Post(models.Model):
     def was_published_before24(self):
         return self.pub_date >= (timezone.now() - datetime.timedelta(hours = 24))
 
-    def post_liked(self):
-        post_liked_note  = 'Вам понравилось!'
-        return post_liked_note
-
 COMMENT_STATUS = (
     (0,"Drafted"),
     (1,"Published")

@@ -31,25 +31,30 @@ def MainPageView(request):
 
     for city in cities:
 
-        res = requests.get(url.format(city)).json()  
-        city_info = {
+        try:
+            res = requests.get(url.format(city)).json()  
+            city_info = {
 
-            'city': city,
-            'temp': res['main']['temp'],
-            'humidity': res['main']['humidity'],
-            'icon': res['weather'][0]['icon']
-        }
+                'city': city,
+                'temp': res['main']['temp'],
+                'humidity': res['main']['humidity'],
+                'icon': res['weather'][0]['icon']
+                    }
 
-        all_cities.insert(0, city_info)
+            all_cities.clear()
+            all_cities.append(city_info)
+
+        except KeyError:
+            messages.info(request, "Что-то пошло не так...")
 
     content = {
         'all_info': all_cities,
         'form': form,
         'cities': cities
-        }
+            }
 
     return render(request, template_name, content)
-
+   
 def Delete_weather_list(request):
 
     cities = City.objects.all()
@@ -112,5 +117,5 @@ def ContactMe(request):
     personal_info = ContactAbout.objects.filter(id = 1)
     content = {
         'personal_info': personal_info
-    }
+        }
     return render(request, template_name, content)
