@@ -11,7 +11,6 @@ def SignupView(request):
 
         username = request.POST['username']
         password = request.POST['password']
-
         user = auth.authenticate(
 
                     username = username,
@@ -29,7 +28,6 @@ def SignupView(request):
     else:
         return render(request, template_name)
 
-
 def Registration(request):
 
     template_name = 'accounts/registration.html'
@@ -43,11 +41,7 @@ def Registration(request):
         password = request.POST['password']
         password_confirm = request.POST['password_confirm']
 
-        
-
         if password == password_confirm:
-
-
 
             if User.objects.filter(username = username).exists():
                 messages.info(request, 'Username is already taken')
@@ -76,7 +70,6 @@ def Registration(request):
     
     else:
     	return render(request, template_name)
-
 
 def SignoutView(request):
 

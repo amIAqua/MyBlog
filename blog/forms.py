@@ -26,7 +26,7 @@ class CityForm(forms.ModelForm):
 		widgets = {
 		    'city_name': forms.TextInput(attrs = {
 		    	               'class': 'form-control',
-		    	               'placeholder': 'Комментарий'
+		    	               'placeholder': 'Введите город'
 
 		    	                 })
 		        }

@@ -40,15 +40,22 @@ def MainPageView(request):
             'icon': res['weather'][0]['icon']
         }
 
-        all_cities.append(city_info)
+        all_cities.insert(0, city_info)
 
-    context = {
+    content = {
         'all_info': all_cities,
         'form': form,
-        #'clear': d1
+        'cities': cities
         }
 
-    return render(request, template_name, context )
+    return render(request, template_name, content)
+
+def Delete_weather_list(request):
+
+    cities = City.objects.all()
+    cities.delete()
+
+    return HttpResponseRedirect(reverse('blog:MainPageView')) 
 
 class PostsPageList(ListView):
 
@@ -78,52 +85,32 @@ def PostPageView(request, slug):
     content = {
 	    'post': post,
 	    'comments_list':comments_list,
-	    'form': form	    
+	    'form': form,	    
 	    }
 
     return render(request, template_name, content)
 
-"""
-def Postliked(request, slug):
-
-    template_name = 'blog/postview.html'
+def Post_liked(request, slug):
 
     post = get_object_or_404(Post, slug=slug)
-
-    if request.method == 'POST':
-        post_liked = ''
-        return HttpResponseRedirect(reverse('PostPageView', args = (post.slug,)))
-    
-    content = {
-	    'post': post,
-	    'post_liked': post_liked,
-	    	    
-	    }
-
-    return render(request, template_name, content)
-"""
-										
+    return HttpResponseRedirect(reverse('blog:PostPageView', args = (post.slug,)))
+									
 def Posts24PageView(request):
 
 	template_name = 'blog/posts24.html'
 
 	posts = Post.objects.all().order_by('-pub_date')[:10]
-
 	content = {
 	    'posts': posts
 	    } 
-
 	return render(request, template_name, content)
-
 
 def ContactMe(request):
 
     template_name = 'blog/contactme.html'
 
     personal_info = ContactAbout.objects.filter(id = 1)
-
     content = {
         'personal_info': personal_info
     }
-
     return render(request, template_name, content)

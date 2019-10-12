@@ -44,6 +44,9 @@
         <hr class="my-4">
         <p>{{ post.post_content }}</p>
         <br>
+        <hr class="my-4">
+        <a class="btn btn-info" href="{% url 'blog:Post_liked' post.slug  %}">Мне нравится!</a>
+ 
       </div>    
     </div>
 
