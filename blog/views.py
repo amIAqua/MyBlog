@@ -7,8 +7,12 @@ from django.contrib.auth.models import User
 from django.views.generic import ListView
 from django.contrib import messages
 import requests
+import datetime
+from requests.compat import quote_plus
+from bs4 import BeautifulSoup
 
 
+BASE_URL = 'https://kurs.onliner.by/'
 
 def MainPageView(request):
 
@@ -46,11 +50,60 @@ def MainPageView(request):
 
         except KeyError:
             messages.info(request, "Что-то пошло не так...")
+    
+    """Creating a currancy rate view"""
 
+    date = datetime.date.today()   
+    BASE_URL = 'https://kurs.onliner.by/' 
+    
+    response = requests.get(BASE_URL)
+    data  = response.text   
+    soup = BeautifulSoup(data, features = 'html.parser')
+    
+    currancy_USD_rate = soup.find_all(
+        'p', {'class': 'value fall'},
+        )
+
+    currancy_EUR_rate = soup.find_all(
+        'p', {'class': 'value'},
+        )
+
+    currancy_RUB_rate = soup.find_all(
+        'p', {'class': 'value fall'},
+        )
+
+
+    currancy_USD_rate_sell = soup.find_all(
+        'p', {'class': 'value'},
+        )
+
+    currancy_EUR_rate_sell = soup.find_all(
+        'p', {'class': 'value'},
+        )
+
+    currancy_RUB_rate_sell = soup.find_all(
+        'p', {'class': 'value'},
+        )
+
+    final_USD_rate = currancy_USD_rate[0].text
+    final_EUR_rate = currancy_EUR_rate[3].text
+    final_RUB_rate = currancy_RUB_rate[1].text
+
+    final_USD_rate_sell = currancy_USD_rate_sell[1].text
+    final_EUR_rate_sell = currancy_EUR_rate_sell[4].text
+    final_RUB_rate_sell = currancy_RUB_rate_sell[7].text
+   
     content = {
         'all_info': all_cities,
         'form': form,
-        'cities': cities
+        'cities': cities,
+        'final_USD_rate': final_USD_rate,
+        'final_EUR_rate': final_EUR_rate,
+        'final_RUB_rate': final_RUB_rate,
+        'final_USD_rate_sell': final_USD_rate_sell,
+        'final_EUR_rate_sell': final_EUR_rate_sell,
+        'final_RUB_rate_sell': final_RUB_rate_sell,
+        'date': date,
             }
 
     return render(request, template_name, content)

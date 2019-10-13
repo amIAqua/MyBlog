@@ -65,6 +65,10 @@
     {% block content%}
 
     <div style="margin-left: 20px" class="container-fluid">
+      <div class="row">
+        
+
+      
       <div class="col-md-3">
         <div class="">
           <h1>Погода в вашем городе</h1>
@@ -107,7 +111,72 @@
           {% endif %}
           
         </div>
-           
+        </div>
+
+
+
+        <div class="col-md-3">
+          <h1>Курсы валют</h1>
+          <div class="alert alert-info">
+            <h4>Курсы валют НБРБ на момент {{ date }}</h4>
+              <div class="row">
+                <div class="col-md-5">
+                  <p><b>Покупка</b></p>
+                  <b>USD:  <span style="color: red; font-size: 16px">{{ final_USD_rate }}</span></b> <br>
+                  <b>EUR:  <span style="color: red; font-size: 16px">{{ final_EUR_rate }}</span></b> <br>
+                  <b>RUB:  <span style="color: red; font-size: 16px">{{ final_RUB_rate }}</span></b> <br>                
+                </div>
+                <div class="col-md-5">
+                  <p><b>Продажа</b></p>
+                  <b>USD:  <span style="color: red; font-size: 16px">{{ final_USD_rate_sell }}</span></b> <br>
+                  <b>EUR:  <span style="color: red; font-size: 16px">{{ final_EUR_rate_sell }}</span></b> <br>
+                  <b>RUB:  <span style="color: red; font-size: 16px">{{ final_RUB_rate_sell }}</span></b> <br> 
+                </div>      
+              </div>
+  
+            </div>   
+          </div>       
+          <hr class="my-4">
+        <div  class="">
+          {% for currancy in all_rate %}
+            <div class="alert alert-info mt-3">
+              <div class="row">
+                <div class="col-md-9">
+                  <b>Курс USD НБРБ на сегодня:</b>  <br>                 
+                </div>          
+              </div>                 
+            </div>
+          {% endfor %}
+          {% if cities %}        
+            <a href="{% url 'blog:Delete_weather_list' %}" name="clear" class="btn btn-danger mt-1 col-3">Очистить</a>
+          {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       </div>
     </div>
   
