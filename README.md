@@ -1,1 +1,2 @@
 # MyBlog
+#First Django project
