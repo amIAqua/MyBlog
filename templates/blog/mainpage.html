@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/css/mainpage.css' %}">
     {% block title %}
 	<title>My Blog</title>
 	{% endblock %}
@@ -136,20 +136,8 @@
   
             </div>   
           </div>       
-          <hr class="my-4">
-        <div  class="">
-          {% for currancy in all_rate %}
-            <div class="alert alert-info mt-3">
-              <div class="row">
-                <div class="col-md-9">
-                  <b>Курс USD НБРБ на сегодня:</b>  <br>                 
-                </div>          
-              </div>                 
-            </div>
-          {% endfor %}
-          {% if cities %}        
-            <a href="{% url 'blog:Delete_weather_list' %}" name="clear" class="btn btn-danger mt-1 col-3">Очистить</a>
-          {% endif %}
+          
+       
 
 
 
