@@ -1,3 +1,3 @@
 # MyBlog
 
-Created like a first Django project
+Django project
